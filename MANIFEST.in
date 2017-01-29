@@ -1,0 +1,2 @@
+recursive-include user_agreement/templates *
+recursive-include user_agreement/migrations *

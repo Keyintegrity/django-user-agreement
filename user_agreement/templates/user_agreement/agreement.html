@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1>User agreement</h1>
+
+    <div class="agreement-content">
+        {{ current_agreement.content|safe }}
+    </div>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.redirect_to }}
+        <button>Accept</button>
+    </form>
+</body>
+</html>
