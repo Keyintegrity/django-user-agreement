@@ -1,8 +1,7 @@
-# coding: utf-8
-
 from .models import Agreement, UserAgreement
 from django.contrib import admin
 from django.contrib.admin.actions import delete_selected as delete_selected_
+from django.utils.translation import ugettext as _
 
 
 class BaseModelAdmin(admin.ModelAdmin):
@@ -15,7 +14,7 @@ class BaseModelAdmin(admin.ModelAdmin):
         else:
             return delete_selected_(self, request, queryset)
 
-    delete_selected.short_description = u'Удалить'
+    delete_selected.short_description = _('Delete')
 
 
 class AgreementAdmin(BaseModelAdmin):

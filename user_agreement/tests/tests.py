@@ -40,9 +40,9 @@ class ViewsTestCase(TestCase):
 
     def test_user_accept_agreement(self):
         self.client.login(username='user', password='user')
-        response = self.client.post(self.user_agreement_url + '?redirect_to=/')
+        response = self.client.post(self.user_agreement_url, data={'redirect_to': '/some_page/'})
         self.assertEqual(UserAgreement.objects.count(), 1)
-        self.assertRedirects(response, '/')
+        self.assertRedirects(response, '/some_page/')
 
     def test_access_to_page_when_agreement_accepted(self):
         UserAgreement.objects.create(

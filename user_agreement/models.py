@@ -1,16 +1,14 @@
-# coding: utf-8
-
-from __future__ import unicode_literals
 from django.conf import settings
 from django.core.cache import cache
 from django.db import models
+from django.utils.translation import ugettext as _
 
 
 class BaseModel(models.Model):
     created = models.DateTimeField(
         auto_now_add=True,
         editable=False,
-        verbose_name='Дата создания'
+        verbose_name=_('Date of creation')
     )
     updated = models.DateTimeField(
         auto_now=True,
@@ -26,18 +24,18 @@ class BaseModel(models.Model):
 
 class Agreement(BaseModel):
     class Meta:
-        verbose_name = 'Пользовательское соглашение'
-        verbose_name_plural = 'Пользовательские соглашения'
+        verbose_name = _('Agreement')
+        verbose_name_plural = _('Agreements')
 
     active = models.BooleanField(
         default=False,
-        verbose_name='Действующее соглашение'
+        verbose_name=_('Current agreement')
     )
-    content = models.TextField(verbose_name='Содержимое')
+    content = models.TextField(verbose_name=_('Content'))
     author = models.ForeignKey(settings.AUTH_USER_MODEL)
 
     def __unicode__(self):
-        return 'Соглашение от {}'.format(str(self.created))
+        return str(self.created)
 
     def __init__(self, *args, **kwargs):
         super(Agreement, self).__init__(*args, **kwargs)
@@ -89,11 +87,11 @@ class Agreement(BaseModel):
 
 class UserAgreement(BaseModel):
     class Meta:
-        verbose_name = 'Принятое пользовательское соглашение'
-        verbose_name_plural = 'Принятые пользовательские соглашения'
+        verbose_name = _('Accepted user agreement')
+        verbose_name_plural = _('Accepted user agreements')
 
-    agreement = models.ForeignKey(Agreement, verbose_name='Пользовательское соглашение')
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='Пользователь')
+    agreement = models.ForeignKey(Agreement, verbose_name=_('User agreement'))
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'))
 
     def save(self, *args, **kwargs):
         super(UserAgreement, self).save(*args, **kwargs)
