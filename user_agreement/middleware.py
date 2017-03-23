@@ -31,6 +31,10 @@ class UserAgreementMiddleware(object):
         if self.skip_agreement_checking(request):
             return
 
-        response = HttpResponseRedirect('{}?redirect_to={}'.format(agreement_url, request.path_info))
+        redirect_to = request.path_info
+        querystring = request.META['QUERY_STRING']
+        if querystring:
+            redirect_to += '?' + querystring
+        response = HttpResponseRedirect(agreement_url + '?redirect_to={}'.format(redirect_to))
         add_never_cache_headers(response)
         return response

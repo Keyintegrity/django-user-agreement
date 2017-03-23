@@ -38,6 +38,13 @@ class ViewsTestCase(TestCase):
         response = self.client.get(reverse('some_page'))
         self.assertRedirects(response, self.user_agreement_url + '?redirect_to=/some_page/')
 
+    def test_redirect_to_user_agreement_page_with_querystring(self):
+        self.assertEqual(UserAgreement.objects.count(), 0)
+        self.client.login(username='user', password='user')
+        querystring = 'a=1&b=2'
+        response = self.client.get('{}?{}'.format(reverse('some_page'), querystring))
+        self.assertRedirects(response, '{}?{}?{}'.format(self.user_agreement_url, 'redirect_to=/some_page/', querystring))
+
     def test_user_accept_agreement(self):
         self.client.login(username='user', password='user')
         response = self.client.post(self.user_agreement_url, data={'redirect_to': '/some_page/'})
