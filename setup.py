@@ -16,6 +16,10 @@ setup(
     include_package_data=True,
     description='django_user_agreement',
     long_description=README,
+    install_requires=[
+        'django>=1.9',
+        'future>=0.16.0',
+    ],
     url='https://github.com/Keyintegrity/django_user_agreement',
     author='keyintegrity',
     author_email='uishnk@yandex.ru',
