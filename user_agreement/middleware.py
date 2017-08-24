@@ -1,4 +1,5 @@
 from __future__ import unicode_literals
+from future.builtins import object
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.utils.cache import add_never_cache_headers

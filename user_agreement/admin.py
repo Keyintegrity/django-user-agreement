@@ -1,3 +1,4 @@
+from __future__ import unicode_literals
 from .models import Agreement, UserAgreement
 from django.contrib import admin
 from django.contrib.admin.actions import delete_selected as delete_selected_

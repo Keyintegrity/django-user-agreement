@@ -1,5 +1,6 @@
 # coding: utf-8
 
+from __future__ import unicode_literals
 from user_agreement.models import Agreement, UserAgreement
 from django.contrib.auth.models import User
 from django.core.cache import cache
@@ -91,4 +92,3 @@ class ViewsTestCase(TestCase):
 
         user_agreement.delete()
         self.assertIsNone(cache.get(UserAgreement.cache_key_pattern.format(user.pk, agreement.pk)))
-
