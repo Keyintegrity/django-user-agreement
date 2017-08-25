@@ -4,7 +4,7 @@ from future.utils import python_2_unicode_compatible
 from django.conf import settings
 from django.core.cache import cache
 from django.db import models
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_lazy as _
 
 
 class BaseModel(models.Model):
