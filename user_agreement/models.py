@@ -1,7 +1,10 @@
+from __future__ import unicode_literals
+from future.builtins import str
+from future.utils import python_2_unicode_compatible
 from django.conf import settings
 from django.core.cache import cache
 from django.db import models
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_lazy as _
 
 
 class BaseModel(models.Model):
@@ -22,6 +25,7 @@ class BaseModel(models.Model):
         abstract = True
 
 
+@python_2_unicode_compatible
 class Agreement(BaseModel):
     class Meta:
         verbose_name = _('Agreement')
@@ -34,7 +38,7 @@ class Agreement(BaseModel):
     content = models.TextField(verbose_name=_('Content'))
     author = models.ForeignKey(settings.AUTH_USER_MODEL)
 
-    def __unicode__(self):
+    def __str__(self):
         return str(self.created)
 
     def __init__(self, *args, **kwargs):

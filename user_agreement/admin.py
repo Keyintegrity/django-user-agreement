@@ -1,7 +1,8 @@
+from __future__ import unicode_literals
 from .models import Agreement, UserAgreement
 from django.contrib import admin
 from django.contrib.admin.actions import delete_selected as delete_selected_
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_lazy as _
 
 
 class BaseModelAdmin(admin.ModelAdmin):
