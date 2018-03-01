@@ -18,7 +18,7 @@ class AgreementView(FormView):
 
     def get_context_data(self, **kwargs):
         context = super(AgreementView, self).get_context_data(**kwargs)
-        context['current_agreement'] = Agreement.get_current_agreement()
+        context['current_agreement'] = Agreement.get_current_agreement(self.request.user)
         return context
 
     def get_initial(self):
@@ -27,6 +27,6 @@ class AgreementView(FormView):
         return initial
 
     def form_valid(self, form):
-        Agreement.get_current_agreement().accept(self.request.user)
+        Agreement.get_current_agreement(self.request.user).accept(self.request.user)
         redirect_to = form.cleaned_data['redirect_to'] or '/'
         return HttpResponseRedirect(redirect_to)

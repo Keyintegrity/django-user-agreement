@@ -22,10 +22,10 @@ class UserAgreementMiddleware(object):
         if not request.user.is_authenticated():
             return True
 
-        if not Agreement.get_current_agreement():
+        if not Agreement.get_current_agreement(request.user):
             return True
 
-        if Agreement.get_current_agreement().is_accepted(request.user.pk):
+        if Agreement.get_current_agreement(request.user).is_accepted(request.user.pk):
             return True
 
     def process_request(self, request):

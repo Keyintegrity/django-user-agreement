@@ -1,10 +1,13 @@
 from __future__ import unicode_literals
-from future.builtins import str
-from future.utils import python_2_unicode_compatible
+
 from django.conf import settings
 from django.core.cache import cache
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+from future.builtins import str
+from future.utils import python_2_unicode_compatible
+
+from .helpers import import_obj
 
 
 class BaseModel(models.Model):
@@ -19,7 +22,6 @@ class BaseModel(models.Model):
     )
 
     cache_key_pattern = 'user.{}.agreement.{}.accepted'
-    current_agreement_cache_key = 'user_agreement.current_theme'
 
     class Meta:
         abstract = True
@@ -45,33 +47,16 @@ class Agreement(BaseModel):
         super(Agreement, self).__init__(*args, **kwargs)
         self.old_active = self.active
 
-    def save(self, *args, **kwargs):
-        super(Agreement, self).save(*args, **kwargs)
-        if self.active:
-            Agreement.objects.exclude(id=self.id).update(active=False)
-            cache.set(self.current_agreement_cache_key, self)
-        else:
-            if self.active != self.old_active:
-                cache.delete(self.current_agreement_cache_key)
-
-    def delete(self, *args, **kwargs):
-        super(Agreement, self).delete(*args, **kwargs)
-        if self.active:
-            cache.delete(self.current_agreement_cache_key)
-
     @classmethod
-    def get_current_agreement(cls):
-        current_agreement = cache.get(cls.current_agreement_cache_key)
-        if current_agreement:
-            return current_agreement
+    def get_current_agreement(cls, user):
+        func_path = getattr(settings, 'AGREEMENT_FOR_USER', None)
 
-        try:
-            current_agreement = cls.objects.get(active=True)
-        except cls.DoesNotExist:
-            return
+        if func_path:
+            func = import_obj(func_path)
+            if callable(func):
+                return func(user)
 
-        cache.set(cls.current_agreement_cache_key, current_agreement)
-        return current_agreement
+        return Agreement.objects.filter(active=True).first()
 
     def is_accepted(self, user_id):
         accepted = cache.get(self.cache_key_pattern.format(user_id, self.pk))

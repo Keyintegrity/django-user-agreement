@@ -64,23 +64,6 @@ class ViewsTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         cache.clear()
 
-    def test_create_new_active_agreement(self):
-        Agreement.objects.create(
-            active=True,
-            content='Second agreement content',
-            author=User.objects.get(username='user')
-        )
-        self.assertEqual(Agreement.objects.count(), 2)
-        self.assertFalse(Agreement.objects.first().active)
-        self.assertTrue(Agreement.objects.last().active)
-
-    def test_create_current_agreement_in_cache(self):
-        self.assertEqual(cache.get('user_agreement.current_theme'), Agreement.objects.first())
-
-    def test_delete_current_agreement_from_cache(self):
-        Agreement.objects.first().delete()
-        self.assertIsNone(cache.get(Agreement.current_agreement_cache_key))
-
     def test_user_agreement_cache(self):
         user = User.objects.get(username='user')
         agreement = Agreement.objects.first()
