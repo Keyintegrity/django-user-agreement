@@ -1,14 +1,16 @@
 from __future__ import unicode_literals
-from future.builtins import object
+
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.utils.cache import add_never_cache_headers
+from django.utils.deprecation import MiddlewareMixin
+
 from user_agreement.models import Agreement
 
 agreement_url = reverse('user_agreement')
 
 
-class UserAgreementMiddleware(object):
+class UserAgreementMiddleware(MiddlewareMixin):
     def skip_agreement_checking(self, request):
         if request.method != 'GET':
             return True
