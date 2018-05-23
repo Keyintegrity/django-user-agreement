@@ -9,13 +9,13 @@ os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
     name='django_user_agreement',
-    version='0.0.6',
+    version='0.0.7',
     packages=find_packages(),
     include_package_data=True,
     description='django_user_agreement',
     long_description=README,
     install_requires=[
-        'django>=1.9',
+        'django>=1.10,<2.0',
         'future>=0.16.0',
     ],
     url='https://github.com/Keyintegrity/django_user_agreement',

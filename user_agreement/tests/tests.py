@@ -5,7 +5,7 @@ from user_agreement.models import Agreement, UserAgreement
 from django.contrib.auth.models import User
 from django.core.cache import cache
 from django.core.urlresolvers import reverse
-from django.test import TestCase
+from django.test import TestCase, override_settings
 
 
 class ViewsTestCase(TestCase):
@@ -33,13 +33,32 @@ class ViewsTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.context['current_agreement'], Agreement.objects.first())
 
-    def test_redirect_to_user_agreement_page(self):
+    @override_settings(AGREEMENT_URLS_BLACKLIST=[])
+    def test_none_redirect_to_user_agreement_page_with_empty_black_list(self):
+        self.assertEqual(UserAgreement.objects.count(), 0)
+        self.client.login(username='user', password='user')
+        response = self.client.get(reverse('some_page'))
+        self.assertEqual(response.status_code, 200)
+        response = self.client.get(reverse('some_page_in_blacklist'))
+        self.assertEqual(response.status_code, 200)
+
+    def test_redirect_to_user_agreement_page_with_black_list(self):
         self.assertEqual(UserAgreement.objects.count(), 0)
         self.client.login(username='user', password='user')
         response = self.client.get(reverse('some_page'))
         self.assertRedirects(response, self.user_agreement_url + '?redirect_to=/some_page/')
+        response = self.client.get(reverse('some_page_in_blacklist'))
+        self.assertRedirects(response, self.user_agreement_url + '?redirect_to=/some_page/in_blacklist/')
 
-    def test_redirect_to_user_agreement_page_with_querystring(self):
+    @override_settings(AGREEMENT_URLS_BLACKLIST=[])
+    def test_none_redirect_to_user_agreement_page_with_querystring_with_empty_black_list(self):
+        self.assertEqual(UserAgreement.objects.count(), 0)
+        self.client.login(username='user', password='user')
+        querystring = 'a=1&b=2'
+        response = self.client.get('{}?{}'.format(reverse('some_page'), querystring))
+        self.assertEqual(response.status_code, 200)
+
+    def test_redirect_to_user_agreement_page_with_querystring_with_black_list(self):
         self.assertEqual(UserAgreement.objects.count(), 0)
         self.client.login(username='user', password='user')
         querystring = 'a=1&b=2'
@@ -75,3 +94,13 @@ class ViewsTestCase(TestCase):
 
         user_agreement.delete()
         self.assertIsNone(cache.get(UserAgreement.cache_key_pattern.format(user.pk, agreement.pk)))
+
+    @override_settings(AGREEMENT_URLS_WHITELIST=['/some_page/in_whitelist/', ])
+    def test_access_to_page_in_whitelist(self):
+        self.assertEqual(UserAgreement.objects.count(), 0)
+        self.client.login(username='user', password='user')
+        response = self.client.get(reverse('some_page'))
+        self.assertRedirects(response, self.user_agreement_url + '?redirect_to=/some_page/')
+        response = self.client.get(reverse('some_page_in_whitelist'))
+        self.assertEqual(response.status_code, 200)
+

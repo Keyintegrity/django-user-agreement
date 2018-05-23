@@ -49,7 +49,7 @@ class Agreement(BaseModel):
 
     @classmethod
     def get_current_agreement(cls, user):
-        func_path = getattr(settings, 'AGREEMENT_FOR_USER', None)
+        func_path = settings.AGREEMENT_FOR_USER
 
         if func_path:
             func = import_obj(func_path)
