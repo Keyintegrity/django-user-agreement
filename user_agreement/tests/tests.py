@@ -8,7 +8,6 @@ from django.core.urlresolvers import reverse
 from django.test import TestCase, override_settings
 
 
-@override_settings(AGREEMENT_URLS_BLACKLIST=['/some_page/',])
 class ViewsTestCase(TestCase):
     def setUp(self):
         user = User.objects.create_user(

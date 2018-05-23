@@ -13,8 +13,10 @@ agreement_url = reverse('user_agreement')
 
 class UserAgreementMiddleware(MiddlewareMixin):
     def path_in_list(self, path, url_list):
-        result = [url for url in url_list if path.startswith(url)]
-        return any(result)
+        for url in url_list:
+            if path.startswith(url):
+                return True
+        return False
 
     def path_in_blacklist(self, path):
         black_list = getattr(settings, 'AGREEMENT_URLS_BLACKLIST', [])
