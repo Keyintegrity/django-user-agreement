@@ -19,12 +19,10 @@ class UserAgreementMiddleware(MiddlewareMixin):
         return False
 
     def path_in_blacklist(self, path):
-        black_list = getattr(settings, 'AGREEMENT_URLS_BLACKLIST', [])
-        return self.path_in_list(path, black_list)
+        return self.path_in_list(path, settings.AGREEMENT_URLS_BLACKLIST)
 
     def path_in_whitelist(self, path):
-        white_list = getattr(settings, 'AGREEMENT_URLS_WHITELIST', [])
-        return self.path_in_list(path, white_list)
+        return self.path_in_list(path, settings.AGREEMENT_URLS_WHITELIST)
 
     def skip_agreement_checking(self, request):
         if self.path_in_whitelist(request.path_info):
