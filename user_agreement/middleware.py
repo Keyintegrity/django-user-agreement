@@ -1,14 +1,14 @@
 from __future__ import unicode_literals
 
 from django.conf import settings
-from django.core.urlresolvers import reverse
+from django.core.urlresolvers import reverse_lazy
 from django.http import HttpResponseRedirect
 from django.utils.cache import add_never_cache_headers
 from django.utils.deprecation import MiddlewareMixin
 
 from user_agreement.models import Agreement
 
-agreement_url = reverse('user_agreement')
+agreement_url = reverse_lazy('user_agreement')
 
 
 class UserAgreementMiddleware(MiddlewareMixin):
