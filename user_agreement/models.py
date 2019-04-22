@@ -8,6 +8,7 @@ from future.builtins import str
 from future.utils import python_2_unicode_compatible
 
 from .helpers import import_obj
+from .signals import user_agreement_accepted
 
 
 class BaseModel(models.Model):
@@ -72,6 +73,7 @@ class Agreement(BaseModel):
             agreement=self,
             user=user
         )
+        user_agreement_accepted.send(sender=self.__class__, user=user, agreement=self)
 
 
 class UserAgreement(BaseModel):
