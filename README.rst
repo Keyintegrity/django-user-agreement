@@ -1,1 +1,1 @@
-django_user_agreement
+django-user-agreement

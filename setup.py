@@ -8,17 +8,17 @@ with io.open(os.path.join(os.path.dirname(__file__), 'README.rst')) as readme:
 os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
-    name='django_user_agreement',
+    name='django-user-agreement',
     version='0.0.8',
     packages=find_packages(),
     include_package_data=True,
-    description='django_user_agreement',
+    description='django-user-agreement',
     long_description=README,
     install_requires=[
         'django>=1.10,<2.0',
         'future>=0.16.0',
     ],
-    url='https://github.com/Keyintegrity/django_user_agreement',
+    url='https://github.com/Keyintegrity/django-user-agreement',
     author='keyintegrity',
     author_email='uishnk@yandex.ru',
     classifiers=[
