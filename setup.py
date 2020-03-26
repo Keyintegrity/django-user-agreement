@@ -15,7 +15,7 @@ setup(
     description='django-user-agreement',
     long_description=README,
     install_requires=[
-        'django>=1.10,<2.0',
+        'Django>=1.11,<2.1',
     ],
     url='https://github.com/Keyintegrity/django-user-agreement',
     author='keyintegrity',
