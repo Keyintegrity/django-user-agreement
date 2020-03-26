@@ -1,6 +1,3 @@
-# coding: utf-8
-
-from __future__ import unicode_literals
 from user_agreement.models import Agreement, UserAgreement
 from django.contrib.auth.models import User
 from django.core.cache import cache

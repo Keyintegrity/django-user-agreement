@@ -1,5 +1,3 @@
-from __future__ import unicode_literals
-
 from django.contrib import admin
 from django.contrib import messages
 from django.contrib.admin.actions import delete_selected as delete_selected_
@@ -28,7 +26,7 @@ class AgreementAdmin(BaseModelAdmin):
     def save_model(self, request, obj, form, change):
         obj.author = request.user
         super(AgreementAdmin, self).save_model(request, obj, form, change)
-        
+
         active_agreements_count = Agreement.objects.filter(active=True).count()
         if active_agreements_count > 1:
             messages.warning(request, 'Multiple active agreements')

@@ -1,6 +1,3 @@
-# coding: utf-8
-
-from __future__ import unicode_literals
 from django.http import Http404, HttpResponseRedirect
 from django.views.generic import FormView
 from user_agreement.forms import AgreementForm
