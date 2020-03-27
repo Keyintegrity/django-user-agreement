@@ -1,8 +1,7 @@
-import io
 import os
-from setuptools import setup, find_packages
+from setuptools import setup
 
-with io.open(os.path.join(os.path.dirname(__file__), 'README.md')) as readme:
+with open(os.path.join(os.path.dirname(__file__), 'README.md')) as readme:
     README = readme.read()
 
 os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
@@ -10,7 +9,7 @@ os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 setup(
     name='django-user-agreement',
     version='0.0.9',
-    packages=find_packages(exclude=['project']),
+    packages=['user_agreement'],
     include_package_data=True,
     description='django-user-agreement',
     long_description=README,
