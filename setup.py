@@ -10,7 +10,7 @@ os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 setup(
     name='django-user-agreement',
     version='0.0.9',
-    packages=find_packages(),
+    packages=find_packages(exclude=['project']),
     include_package_data=True,
     description='django-user-agreement',
     long_description=README,
