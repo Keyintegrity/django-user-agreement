@@ -21,6 +21,7 @@ class BaseModelAdmin(admin.ModelAdmin):
     delete_selected.short_description = _('Delete')
 
     def _get_base_actions(self):
+        # https://code.djangoproject.com/ticket/30311
         actions_dict = OrderedDict(
             (name, (func, name, description))
             for func, name, description in super()._get_base_actions()
