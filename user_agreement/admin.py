@@ -1,3 +1,5 @@
+from collections import OrderedDict
+
 from django.contrib import admin
 from django.contrib import messages
 from django.contrib.admin.actions import delete_selected as delete_selected_
@@ -17,6 +19,13 @@ class BaseModelAdmin(admin.ModelAdmin):
             return delete_selected_(self, request, queryset)
 
     delete_selected.short_description = _('Delete')
+
+    def _get_base_actions(self):
+        actions_dict = OrderedDict(
+            (name, (func, name, description))
+            for func, name, description in super()._get_base_actions()
+        )
+        return list(actions_dict.values())
 
 
 class AgreementAdmin(BaseModelAdmin):
