@@ -1,8 +1,6 @@
-from __future__ import unicode_literals
-
 from django.conf import settings
-from django.core.urlresolvers import reverse_lazy
 from django.http import HttpResponseRedirect
+from django.urls import reverse_lazy
 from django.utils.cache import add_never_cache_headers
 from django.utils.deprecation import MiddlewareMixin
 
@@ -37,7 +35,7 @@ class UserAgreementMiddleware(MiddlewareMixin):
         if request.path_info == agreement_url:
             return True
 
-        if not request.user.is_authenticated():
+        if not request.user.is_authenticated:
             return True
 
         if not Agreement.get_current_agreement(request.user):

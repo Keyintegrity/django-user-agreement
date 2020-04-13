@@ -1,4 +1,4 @@
-from __future__ import unicode_literals
+from collections import OrderedDict
 
 from django.contrib import admin
 from django.contrib import messages
@@ -20,6 +20,14 @@ class BaseModelAdmin(admin.ModelAdmin):
 
     delete_selected.short_description = _('Delete')
 
+    def _get_base_actions(self):
+        # https://code.djangoproject.com/ticket/30311
+        actions_dict = OrderedDict(
+            (name, (func, name, description))
+            for func, name, description in super()._get_base_actions()
+        )
+        return list(actions_dict.values())
+
 
 class AgreementAdmin(BaseModelAdmin):
     fields = ('active', 'content')
@@ -28,7 +36,7 @@ class AgreementAdmin(BaseModelAdmin):
     def save_model(self, request, obj, form, change):
         obj.author = request.user
         super(AgreementAdmin, self).save_model(request, obj, form, change)
-        
+
         active_agreements_count = Agreement.objects.filter(active=True).count()
         if active_agreements_count > 1:
             messages.warning(request, 'Multiple active agreements')

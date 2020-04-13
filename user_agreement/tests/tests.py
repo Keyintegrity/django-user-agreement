@@ -1,11 +1,8 @@
-# coding: utf-8
-
-from __future__ import unicode_literals
 from user_agreement.models import Agreement, UserAgreement
 from django.contrib.auth.models import User
 from django.core.cache import cache
-from django.core.urlresolvers import reverse
 from django.test import TestCase, override_settings
+from django.urls import reverse, reverse_lazy
 
 
 class ViewsTestCase(TestCase):
@@ -20,7 +17,7 @@ class ViewsTestCase(TestCase):
             author=user
         )
 
-    user_agreement_url = reverse('user_agreement')
+    user_agreement_url = reverse_lazy('user_agreement')
 
     def test_user_agreement_page_access_user_not_authorized(self):
         self.assertEqual(Agreement.objects.count(), 1)

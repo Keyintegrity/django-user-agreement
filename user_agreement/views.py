@@ -1,6 +1,3 @@
-# coding: utf-8
-
-from __future__ import unicode_literals
 from django.http import Http404, HttpResponseRedirect
 from django.views.generic import FormView
 from user_agreement.forms import AgreementForm
@@ -12,7 +9,7 @@ class AgreementView(FormView):
     form_class = AgreementForm
 
     def dispatch(self, request, *args, **kwargs):
-        if not self.request.user.is_authenticated():
+        if not self.request.user.is_authenticated:
             raise Http404()
         if not Agreement.get_current_agreement(self.request.user):
             return HttpResponseRedirect(self.request.GET.get('redirect_to') or '/')

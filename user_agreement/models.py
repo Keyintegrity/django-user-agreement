@@ -1,11 +1,7 @@
-from __future__ import unicode_literals
-
 from django.conf import settings
 from django.core.cache import cache
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from future.builtins import str
-from future.utils import python_2_unicode_compatible
 
 from .helpers import import_obj
 
@@ -27,7 +23,6 @@ class BaseModel(models.Model):
         abstract = True
 
 
-@python_2_unicode_compatible
 class Agreement(BaseModel):
     class Meta:
         verbose_name = _('Agreement')
@@ -38,7 +33,7 @@ class Agreement(BaseModel):
         verbose_name=_('Current agreement')
     )
     content = models.TextField(verbose_name=_('Content'))
-    author = models.ForeignKey(settings.AUTH_USER_MODEL)
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
     def __str__(self):
         return str(self.created)
@@ -79,8 +74,8 @@ class UserAgreement(BaseModel):
         verbose_name = _('Accepted user agreement')
         verbose_name_plural = _('Accepted user agreements')
 
-    agreement = models.ForeignKey(Agreement, verbose_name=_('User agreement'))
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'))
+    agreement = models.ForeignKey(Agreement, on_delete=models.CASCADE, verbose_name=_('User agreement'))
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name=_('User'))
 
     def save(self, *args, **kwargs):
         super(UserAgreement, self).save(*args, **kwargs)
