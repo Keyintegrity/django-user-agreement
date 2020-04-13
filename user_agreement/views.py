@@ -11,6 +11,8 @@ class AgreementView(FormView):
     def dispatch(self, request, *args, **kwargs):
         if not self.request.user.is_authenticated:
             raise Http404()
+        if not Agreement.get_current_agreement(self.request.user):
+            return HttpResponseRedirect(self.request.GET.get('redirect_to') or '/')
         return super(AgreementView, self).dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
