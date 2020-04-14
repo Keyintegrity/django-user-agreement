@@ -60,7 +60,11 @@ class ViewsTestCase(TestCase):
         self.client.login(username='user', password='user')
         querystring = 'a=1&b=2'
         response = self.client.get('{}?{}'.format(reverse('some_page'), querystring))
-        self.assertRedirects(response, '{}?{}?{}'.format(self.user_agreement_url, 'redirect_to=/some_page/', querystring))
+        self.assertRedirects(response, '{}?{}?{}'.format(
+            self.user_agreement_url,
+            'redirect_to=/some_page/',
+            querystring,
+        ))
 
     def test_user_accept_agreement(self):
         self.client.login(username='user', password='user')
@@ -100,4 +104,3 @@ class ViewsTestCase(TestCase):
         self.assertRedirects(response, self.user_agreement_url + '?redirect_to=/some_page/')
         response = self.client.get(reverse('some_page_in_whitelist'))
         self.assertEqual(response.status_code, 200)
-
