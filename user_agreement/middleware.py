@@ -54,4 +54,3 @@ class UserAgreementMiddleware(MiddlewareMixin):
                 response = HttpResponseRedirect(agreement_url + '?redirect_to={}'.format(redirect_to))
                 add_never_cache_headers(response)
                 return response
-

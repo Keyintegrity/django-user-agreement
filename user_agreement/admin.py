@@ -1,14 +1,13 @@
 from collections import OrderedDict
 
-from django.contrib import admin
-from django.contrib import messages
-from django.contrib.admin.actions import delete_selected as delete_selected_
+from django.contrib import admin, messages
+from django.contrib.admin.actions import delete_selected as django_delete_selected
 from django.utils.translation import ugettext_lazy as _
 
 from .models import Agreement, UserAgreement
 
 
-class BaseModelAdmin(admin.ModelAdmin):
+class ModelAdmin(admin.ModelAdmin):
     actions = ['delete_selected']
 
     def delete_selected(self, request, queryset):
@@ -16,7 +15,7 @@ class BaseModelAdmin(admin.ModelAdmin):
             for obj in queryset:
                 obj.delete()
         else:
-            return delete_selected_(self, request, queryset)
+            return django_delete_selected(self, request, queryset)
 
     delete_selected.short_description = _('Delete')
 
@@ -29,7 +28,7 @@ class BaseModelAdmin(admin.ModelAdmin):
         return list(actions_dict.values())
 
 
-class AgreementAdmin(BaseModelAdmin):
+class AgreementAdmin(ModelAdmin):
     fields = ('active', 'content')
     list_display = ('created', 'active')
 
@@ -47,7 +46,7 @@ class AgreementAdmin(BaseModelAdmin):
 admin.site.register(Agreement, AgreementAdmin)
 
 
-class UserAgreementAdmin(BaseModelAdmin):
+class UserAgreementAdmin(ModelAdmin):
     list_display = ('user', 'agreement')
 
 
